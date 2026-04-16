@@ -1,0 +1,207 @@
+.post-feed-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.earnings-banner {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.1));
+  border: 1px solid #22c55e;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(10px);
+}
+
+.earnings-label {
+  font-size: 0.95rem;
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.earnings-amount {
+  font-size: 1.5rem;
+  color: #4ade80;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+}
+
+.error-message {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid #ef4444;
+  color: #fca5a5;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.post-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.no-posts {
+  text-align: center;
+  padding: 2rem;
+  color: #94a3b8;
+  font-size: 1.1rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #94a3b8;
+}
+
+/* Post Card */
+.post-card {
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid #334155;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+.post-header {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #334155;
+}
+
+.author {
+  font-weight: 600;
+  color: #60a5fa;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.you-badge {
+  background: #3b82f6;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.timestamp {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  max-height: 400px;
+  display: block;
+}
+
+.post-image:broken {
+  display: none;
+}
+
+.caption {
+  padding: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #e2e8f0;
+}
+
+/* Post Footer */
+.post-footer {
+  padding: 1rem;
+  border-top: 1px solid #334155;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.post-stats {
+  display: flex;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+.likes,
+.earnings {
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.likes {
+  color: #fca5a5;
+}
+
+.earnings {
+  color: #86efac;
+}
+
+/* Like Button */
+.like-button {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.8), rgba(139, 92, 246, 0.8));
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.like-button:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.like-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.like-button.liked {
+  background: linear-gradient(135deg, #ec4899, #d946ef);
+}
+
+.like-button.your-post {
+  background: #64748b;
+  cursor: default;
+}
+
+@media (max-width: 768px) {
+  .post-card {
+    border-radius: 8px;
+  }
+
+  .post-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .like-button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .earnings-banner {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+}
