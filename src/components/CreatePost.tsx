@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Contract } from 'ethers';
-import '../styles/CreatePost.css';
+import { useState } from "react";
+import { Contract } from "ethers";
+import "../styles/CreatePost.css";
 
 interface CreatePostProps {
   contract: Contract | null;
@@ -8,26 +8,32 @@ interface CreatePostProps {
 }
 
 export function CreatePost({ contract, onPostCreated }: CreatePostProps) {
-  const [imageUrl, setImageUrl] = useState('');
-  const [caption, setCaption] = useState('');
+  const [imageUrl, setImageUrl] = useState("");
+  const [caption, setCaption] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!contract || !imageUrl.trim() || !caption.trim()) return;
 
     try {
-      setError('');
+      setError("");
       setIsLoading(true);
       const tx = await contract.createPost(imageUrl, caption);
       await tx.wait();
-      setImageUrl('');
-      setCaption('');
+      setImageUrl("");
+      setCaption("");
       onPostCreated();
-    } catch (err: any) {
-      console.error('Failed to create post:', err);
-      setError(err.message || 'Failed to create post');
+    } catch (err: unknown) {
+      console.error("Failed to create post:", err);
+      if (typeof err === "object" && err !== null && "message" in err) {
+        setError(
+          (err as { message?: string }).message || "Failed to create post",
+        );
+      } else {
+        setError("Failed to create post");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -53,8 +59,11 @@ export function CreatePost({ contract, onPostCreated }: CreatePostProps) {
           required
         />
         {error && <div className="error-text">{error}</div>}
-        <button type="submit" disabled={isLoading || !imageUrl.trim() || !caption.trim()}>
-          {isLoading ? 'Posting...' : 'Post'}
+        <button
+          type="submit"
+          disabled={isLoading || !imageUrl.trim() || !caption.trim()}
+        >
+          {isLoading ? "Posting..." : "Post"}
         </button>
       </form>
     </div>

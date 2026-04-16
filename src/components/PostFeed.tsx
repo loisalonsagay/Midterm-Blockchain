@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Contract } from 'ethers';
-import { Post } from '../types';
-import '../styles/PostFeed.css';
+import { useState, useEffect, useCallback } from "react";
+import { Contract } from "ethers";
+import { Post } from "../types";
+import "../styles/PostFeed.css";
 
 interface PostFeedProps {
   contract: Contract | null;
@@ -12,8 +12,8 @@ interface PostFeedProps {
 export function PostFeed({ contract, account, refreshTrigger }: PostFeedProps) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [userEarnings, setUserEarnings] = useState('0');
+  const [error, setError] = useState("");
+  const [userEarnings, setUserEarnings] = useState("0");
   const [likedPosts, setLikedPosts] = useState<Set<number>>(new Set());
 
   const loadPosts = useCallback(async () => {
@@ -24,12 +24,10 @@ export function PostFeed({ contract, account, refreshTrigger }: PostFeedProps) {
       const allPosts = await contract.getAllPosts();
       setPosts(allPosts);
 
-      // Load earnings if connected
       if (account) {
         const earnings = await contract.totalEarnedByUser(account);
         setUserEarnings((Number(earnings) / 1e18).toFixed(6));
 
-        // Load liked posts
         const liked = new Set<number>();
         for (let i = 0; i < allPosts.length; i++) {
           const hasLiked = await contract.checkLiked(i, account);
@@ -37,9 +35,9 @@ export function PostFeed({ contract, account, refreshTrigger }: PostFeedProps) {
         }
         setLikedPosts(liked);
       }
-    } catch (err: any) {
-      console.error('Failed to load posts:', err);
-      setError('Failed to load posts');
+    } catch (err: unknown) {
+      console.error("Failed to load posts:", err);
+      setError("Failed to load posts");
     } finally {
       setIsLoading(false);
     }
@@ -53,18 +51,23 @@ export function PostFeed({ contract, account, refreshTrigger }: PostFeedProps) {
     if (!contract) return;
 
     try {
-      setError('');
+      setError("");
       const tx = await contract.likePost(postId, {
-        value: '100000000000000', // 0.0001 ETH in wei
+        value: "100000000000000",
       });
       await tx.wait();
       await loadPosts();
-    } catch (err: any) {
-      console.error('Failed to like post:', err);
-      if (err.reason) {
-        setError(`Error: ${err.reason}`);
+    } catch (err: unknown) {
+      console.error("Failed to like post:", err);
+      if (typeof err === "object" && err !== null) {
+        const errorObj = err as { reason?: string; message?: string };
+        if (errorObj.reason) {
+          setError(`Error: ${errorObj.reason}`);
+        } else {
+          setError(errorObj.message || "Failed to like post");
+        }
       } else {
-        setError(err.message || 'Failed to like post');
+        setError("Failed to like post");
       }
     }
   };
@@ -92,7 +95,7 @@ export function PostFeed({ contract, account, refreshTrigger }: PostFeedProps) {
                 <p className="author">
                   {post.creator === account ? (
                     <>
-                      <span className="you-badge">YOU</span>{' '}
+                      <span className="you-badge">YOU</span>{" "}
                       {post.creator.slice(0, 6)}...{post.creator.slice(-4)}
                     </>
                   ) : (
@@ -113,16 +116,20 @@ export function PostFeed({ contract, account, refreshTrigger }: PostFeedProps) {
               <div className="post-footer">
                 <div className="post-stats">
                   <span className="likes">❤️ {Number(post.likes)} likes</span>
-                  <span className="earnings">💰 {(Number(post.totalEarned) / 1e18).toFixed(6)} ETH</span>
+                  <span className="earnings">
+                    💰 {(Number(post.totalEarned) / 1e18).toFixed(6)} ETH
+                  </span>
                 </div>
 
                 {account && post.creator !== account ? (
                   <button
-                    className={`like-button ${likedPosts.has(idx) ? 'liked' : ''}`}
+                    className={`like-button ${
+                      likedPosts.has(idx) ? "liked" : ""
+                    }`}
                     onClick={() => handleLike(idx)}
                     disabled={likedPosts.has(idx)}
                   >
-                    {likedPosts.has(idx) ? '❤️ Liked' : '🤍 Like (0.0001 ETH)'}
+                    {likedPosts.has(idx) ? "❤️ Liked" : "🤍 Like (0.0001 ETH)"}
                   </button>
                 ) : account && post.creator === account ? (
                   <button className="like-button your-post" disabled>

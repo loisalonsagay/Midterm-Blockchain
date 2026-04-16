@@ -1,5 +1,6 @@
 .create-post {
   background: rgba(30, 41, 59, 0.8);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   padding: 2rem;
   border-radius: 12px;

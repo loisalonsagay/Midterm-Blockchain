@@ -11,10 +11,8 @@ async function main() {
   const address = await tipPost.getAddress();
   console.log("TipPost deployed to:", address);
   
-  // Wait for block confirmations
   await tipPost.deploymentTransaction().wait(5);
   
-  // Verify on Etherscan
   try {
     console.log("Verifying on Etherscan...");
     await hre.run("verify:verify", {
